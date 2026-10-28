@@ -1,0 +1,189 @@
+<!-- Page Title Banner -->
+<div class="page-header">
+  <h1>Student Record Management System</h1>
+  <p class="subtitle">A beginner-friendly CRUD application built with Node.js, Express, Handlebars, and MongoDB Atlas.</p>
+</div>
+
+<!-- Main Grid Layout: Form on the Left / Top, Table on the Right / Bottom -->
+<div class="content-grid">
+
+  <!-- ==================== STUDENT FORM CARD ==================== -->
+  <section class="card form-card">
+    <div class="card-header">
+      <h2 id="formTitle">Add New Student</h2>
+      <p class="card-subtitle" id="formSubtitle">Enter student details to save them in MongoDB.</p>
+    </div>
+
+    <!-- Dynamic Client-Side Validation Alert -->
+    <div id="validationAlert" class="alert alert-danger" style="display: none;"></div>
+
+    <!-- Student Form -->
+    <!-- Action defaults to adding a student, dynamically updated by script.js when editing -->
+    <form id="studentForm" action="/students/add" method="POST" novalidate>
+      <input type="hidden" id="studentId" name="studentId">
+
+      <div class="form-group">
+        <label for="name">Student Name <span class="required">*</span></label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          class="form-control"
+          placeholder="e.g. Darsh Sharma"
+          required
+        >
+        <small class="form-text">Full name of the student.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Student Email <span class="required">*</span></label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form-control"
+          placeholder="e.g. darsh@example.com"
+          required
+        >
+        <small class="form-text">Must be a valid email address.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="course">Course / Major <span class="required">*</span></label>
+        <input
+          type="text"
+          id="course"
+          name="course"
+          class="form-control"
+          placeholder="e.g. Web Programming"
+          required
+        >
+        <small class="form-text">Department or enrolled course.</small>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" id="submitBtn" class="btn btn-primary">
+          <span class="btn-icon">&#10010;</span> <span id="submitBtnText">Add Student</span>
+        </button>
+        <button type="button" id="cancelBtn" class="btn btn-secondary" style="display: none;">
+          Cancel Edit
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ==================== STUDENT RECORDS TABLE CARD ==================== -->
+  <section class="card table-card">
+    <div class="card-header flex-between">
+      <div>
+        <h2>Registered Students</h2>
+        <p class="card-subtitle">List of all students stored in the database.</p>
+      </div>
+      <span class="record-counter">
+        Total: <strong>{{students.length}}</strong>
+      </span>
+    </div>
+
+    <div class="table-responsive">
+      <table class="students-table" id="studentsTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Course</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each students}}
+            <tr id="row-{{_id}}">
+              <td class="student-name">
+                <strong>{{name}}</strong>
+              </td>
+              <td class="student-email">{{email}}</td>
+              <td>
+                <span class="course-badge">{{course}}</span>
+              </td>
+              <td class="text-center actions-cell">
+                <!-- Edit Button (Handled by client-side script.js) -->
+                <button
+                  type="button"
+                  class="btn btn-sm btn-edit"
+                  data-id="{{_id}}"
+                  data-name="{{name}}"
+                  data-email="{{email}}"
+                  data-course="{{course}}"
+                  title="Edit Student"
+                >
+                  &#9998; Edit
+                </button>
+
+                <!-- Delete Form with Confirmation (Handled by script.js) -->
+                <form
+                  action="/students/delete/{{_id}}"
+                  method="POST"
+                  class="delete-form"
+                  style="display: inline;"
+                >
+                  <button
+                    type="submit"
+                    class="btn btn-sm btn-delete"
+                    data-name="{{name}}"
+                    title="Delete Student"
+                  >
+                    &#128465; Delete
+                  </button>
+                </form>
+              </td>
+            </tr>
+          {{else}}
+            <tr>
+              <td colspan="4" class="empty-state">
+                <div class="empty-state-content">
+                  <span class="empty-icon">&#128221;</span>
+                  <p><strong>No student records found.</strong></p>
+                  <p class="text-muted">Fill out the form on the left to add your first student!</p>
+                </div>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<!-- ==================== API TESTING CHEAT SHEET CARD ==================== -->
+<section class="card api-card">
+  <h3>&#128640; REST API Endpoints (Available for Postman Testing)</h3>
+  <p class="text-muted">In addition to this web interface, the server provides full REST API JSON endpoints:</p>
+  <div class="api-grid">
+    <div class="api-item">
+      <span class="method get">GET</span>
+      <code>/api/students</code>
+      <span class="api-desc">Retrieve all students</span>
+    </div>
+    <div class="api-item">
+      <span class="method post">POST</span>
+      <code>/api/students</code>
+      <span class="api-desc">Add a new student</span>
+    </div>
+    <div class="api-item">
+      <span class="method get">GET</span>
+      <code>/api/students/:id</code>
+      <span class="api-desc">Retrieve single student</span>
+    </div>
+    <div class="api-item">
+      <span class="method put">PUT</span>
+      <code>/api/students/:id</code>
+      <span class="api-desc">Update a student</span>
+    </div>
+    <div class="api-item">
+      <span class="method delete">DELETE</span>
+      <code>/api/students/:id</code>
+      <span class="api-desc">Delete a student</span>
+    </div>
+  </div>
+</section>
+

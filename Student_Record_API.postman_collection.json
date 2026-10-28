@@ -1,0 +1,137 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Student Record Management API",
+    "description": "Postman Collection for University Web Programming CRUD Assignment testing 5 REST API endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. GET All Students",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/students",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "students"
+          ]
+        },
+        "description": "Retrieves all student records saved in MongoDB."
+      },
+      "response": []
+    },
+    {
+      "name": "2. POST Add Student",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Darsh Sharma\",\n  \"email\": \"darsh@university.edu\",\n  \"course\": \"Web Programming\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/students",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "students"
+          ]
+        },
+        "description": "Creates a new student record in MongoDB."
+      },
+      "response": []
+    },
+    {
+      "name": "3. GET Student by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/students/PASTE_STUDENT_ID_HERE",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "students",
+            "PASTE_STUDENT_ID_HERE"
+          ]
+        },
+        "description": "Retrieves a single student by replacing PASTE_STUDENT_ID_HERE with the MongoDB _id returned from the POST or GET request."
+      },
+      "response": []
+    },
+    {
+      "name": "4. PUT Update Student",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Darsh Sharma (Updated)\",\n  \"email\": \"darsh.updated@university.edu\",\n  \"course\": \"Full Stack Web Development\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/students/PASTE_STUDENT_ID_HERE",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "students",
+            "PASTE_STUDENT_ID_HERE"
+          ]
+        },
+        "description": "Updates an existing student by ID."
+      },
+      "response": []
+    },
+    {
+      "name": "5. DELETE Student",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/students/PASTE_STUDENT_ID_HERE",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "students",
+            "PASTE_STUDENT_ID_HERE"
+          ]
+        },
+        "description": "Deletes a student by ID from MongoDB."
+      },
+      "response": []
+    }
+  ]
+}
+
