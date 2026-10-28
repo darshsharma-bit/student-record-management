@@ -1,188 +1,132 @@
 # Student Record Management System
 
-A beginner-friendly web application for managing student records, built for a university Web Programming syllabus. The project demonstrates full CRUD functionality using a server-rendered Handlebars interface, a RESTful JSON API, and MongoDB persistence following an MVC-style pattern.
+A simple web application for managing student records, built as a Web Programming project. It uses a server-rendered Handlebars interface, an Express REST API, and MongoDB for persistent storage.
 
-`Node.js · Express.js · Handlebars · MongoDB · Mongoose`
-
----
-
-## Overview
-
-This project provides a straightforward implementation of a Student Record Management System:
-- **Web Interface:** Server-side rendered pages using Handlebars and styled with custom CSS for creating, viewing, updating, and deleting student records.
-- **REST API:** Five JSON endpoints enabling programmatic CRUD operations and API testing via Postman.
-- **Data Persistence:** MongoDB Atlas cloud database integrated through Mongoose schemas and models.
-
----
+**Stack:** Node.js · Express · Handlebars · MongoDB Atlas · Mongoose · Vanilla JavaScript
 
 ## Features
 
-- **Create:** Add student records with Name, Email, and Course fields.
-- **Read:** View all registered students in a responsive HTML table.
-- **Update:** Edit existing records with client-side DOM population and server-side update.
-- **Delete:** Remove student records with browser confirmation before deletion.
-- **Validation:** Client-side format checks and Mongoose schema validation.
-- **API Testing:** Documented REST endpoints tested and verified with Postman.
+- Add, view, edit, and delete student records.
+- Store student name, email, and course in MongoDB.
+- Render the student list using Handlebars.
+- Validate input in the browser and with Mongoose.
+- Test CRUD endpoints with Postman.
 
----
+## Tech stack
 
-## Tech Stack
+| Technology | Purpose |
+|---|---|
+| HTML, CSS, JavaScript | Form, table, styling, and browser interactions |
+| Node.js, Express | Server and request routing |
+| Handlebars | Server-rendered HTML |
+| MongoDB Atlas, Mongoose | Persistent data storage and schema validation |
+| Postman | REST API testing |
 
-| Technology | Role |
-| :--- | :--- |
-| **Node.js** | Server-side JavaScript runtime environment |
-| **Express.js** | Backend web application and routing framework |
-| **Handlebars** | Server-side templating engine (`express-handlebars`) |
-| **MongoDB Atlas** | Cloud NoSQL document database |
-| **Mongoose** | Object Data Modeling (ODM) library for MongoDB |
-| **HTML5 / CSS3 / JavaScript** | Responsive layout, styles, DOM manipulation, and validation |
-| **Postman** | REST API testing and collection runner |
-
----
-
-## Project Structure
+## Project structure
 
 ```text
-student-record-management/
-├── config/
-│   └── db.js                    # MongoDB Atlas connection setup
-├── controllers/
-│   └── studentController.js     # Web page and API controller logic
-├── models/
-│   └── Student.js               # Mongoose schema and model
-├── public/
-│   ├── css/style.css            # Custom CSS styling
-│   └── js/script.js             # Client-side DOM events and validation
-├── routes/
-│   ├── studentRoutes.js         # Browser view routes
-│   └── studentApiRoutes.js      # REST API JSON endpoints
-├── screenshots/                 # Recorded Postman test runs
-├── views/
-│   ├── layouts/main.handlebars  # Base HTML layout
-│   └── students/index.handlebars# Main view with form and table
-├── .env.example                 # Environment variables template
-├── .gitignore                   # Excludes .env, node_modules, and caches
-├── app.js                       # Express application configuration
-├── package.json                 # Dependencies and npm scripts
-├── README.md                    # Project documentation
-├── server.js                    # Application entry point
-└── Student_Record_API.postman_collection.json # Postman collection
+config/db.js                         # MongoDB connection
+models/Student.js                    # Student schema and model
+controllers/studentController.js    # UI and API logic
+routes/studentRoutes.js              # Browser routes
+routes/studentApiRoutes.js           # JSON API routes
+views/                               # Handlebars templates
+public/css/style.css                 # Styles
+public/js/script.js                  # Browser-side JavaScript
+screenshots/                         # Postman test screenshots
+Student_Record_API.postman_collection.json
+app.js                               # Express configuration
+server.js                            # Application entry point
+.env.example                         # Environment template
 ```
 
----
+## Run locally
 
-## Prerequisites & Setup
+### Requirements
 
-### Prerequisites
-- [Node.js](https://nodejs.org/) (v18.x or newer) and npm
-- [Git](https://git-scm.com/)
-- A free [MongoDB Atlas](https://www.mongodb.com/atlas/database) account (or local MongoDB instance)
+- [Node.js](https://nodejs.org/) and npm
+- A [MongoDB Atlas](https://www.mongodb.com/atlas) deployment (or another MongoDB connection)
+- [Postman Desktop](https://www.postman.com/downloads/) for API testing
 
-### Installation
+### 1. Install dependencies
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/<YOUR_GITHUB_USERNAME>/student-record-management.git
-   cd student-record-management
-   ```
+```bash
+git clone https://github.com/darshsharma-bit/student-record-management.git
+cd student-record-management
+npm install
+```
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+### 2. Configure environment variables
 
-3. **Configure environment variables:**
-   Copy `.env.example` to `.env`:
-   - On macOS/Linux: `cp .env.example .env`
-   - On Windows (PowerShell): `Copy-Item .env.example .env`
-   - On Windows (CMD): `copy .env.example .env`
+Copy `.env.example` to `.env`.
 
-4. **Configure MongoDB Atlas:**
-   Follow the [MongoDB Atlas Getting Started Guide](https://www.mongodb.com/docs/atlas/getting-started/) to create an M0 cluster. In the Atlas dashboard:
-   - Create a database user with a secure password.
-   - Under **Network Access**, add your current IP address.
-   - Obtain your application connection string and add it to `.env`.
+PowerShell:
 
-5. **Start the application:**
-   ```bash
-   # Development mode (with auto-restart via nodemon)
-   npm run dev
+```powershell
+Copy-Item .env.example .env
+```
 
-   # Standard production mode
-   npm start
-   ```
-
-6. **Access the application:**
-   Open [http://localhost:5000](http://localhost:5000) in your web browser.
-
----
-
-## Environment Configuration
-
-Define the following variables in your local `.env` file:
+Then set your own MongoDB connection string in `.env`:
 
 ```env
 PORT=5000
-MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>/studentDB?retryWrites=true&w=majority
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster-host>/studentDB?retryWrites=true&w=majority
 ```
 
-> **Security Note:** Never commit your `.env` file to version control. The `.env` file is included in `.gitignore` to protect your credentials. In MongoDB Atlas, always use a strong database user password and restrict network access to your current IP address rather than allowing unrestricted access.
+Replace the placeholders with your Atlas details. In Atlas, create a database user and allow access from your current IP address. Keep `.env` private; never commit credentials.
 
----
+### 3. Start the server
 
-## API Reference
+```bash
+npm run dev
+```
+
+Open [http://localhost:5000](http://localhost:5000).
+
+## REST API
 
 Base URL: `http://localhost:5000`
 
-| Method | Endpoint | Purpose |
-| :--- | :--- | :--- |
-| `GET` | `/api/students` | Retrieve all student records |
-| `POST` | `/api/students` | Create a new student record |
-| `GET` | `/api/students/:id` | Retrieve a specific student by ID |
-| `PUT` | `/api/students/:id` | Update an existing student record |
-| `DELETE` | `/api/students/:id` | Delete a student record |
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/students` | List all students |
+| `POST` | `/api/students` | Create a student |
+| `GET` | `/api/students/:id` | Get a student by MongoDB ID |
+| `PUT` | `/api/students/:id` | Update a student |
+| `DELETE` | `/api/students/:id` | Delete a student |
 
-### Example Request Body (`POST` / `PUT`)
+Example request body for `POST` and `PUT`:
 
 ```json
 {
   "name": "Jane Doe",
   "email": "jane.doe@example.com",
-  "course": "Computer Science"
+  "course": "Web Programming"
 }
 ```
 
----
+## Postman testing
 
-## Postman API Testing
+Import `Student_Record_API.postman_collection.json` into Postman Desktop and send the requests to `http://localhost:5000`. For requests that use `:id`, replace the placeholder with the MongoDB `_id` returned by the create request.
 
-The project includes `Student_Record_API.postman_collection.json` in the root directory for automated API testing.
+The screenshots below show the recorded CRUD requests in order.
 
-### Import Instructions
-1. Open **Postman Desktop**.
-2. Click **Import** in the top navigation bar.
-3. Select `Student_Record_API.postman_collection.json`.
-4. Run requests against `http://localhost:5000`.
+<details>
+<summary>View Postman test screenshots</summary>
 
-### Recorded Test Results
+### GET — List students
+![GET all students](screenshots/1-get-all-students.png)
 
-<details open>
-<summary><b>Click to expand / collapse Postman execution screenshots</b></summary>
-<br>
+### POST — Create student
+![POST create student](screenshots/2-post-create-student.png)
 
-#### 1. GET — Retrieve all students (`200 OK`)
-![GET All Students](screenshots/1-get-all-students.png)
+### GET — Retrieve by ID
+![GET student by ID](screenshots/3-get-student-by-id.png)
 
-#### 2. POST — Create student (`201 Created`)
-![POST Create Student](screenshots/2-post-create-student.png)
+### PUT — Update student
+![PUT update student](screenshots/4-put-update-student.png)
 
-#### 3. GET by ID — Retrieve one student (`200 OK`)
-![GET Student by ID](screenshots/3-get-student-by-id.png)
-
-#### 4. PUT — Update student (`200 OK`)
-![PUT Update Student](screenshots/4-put-update-student.png)
-
-#### 5. DELETE — Remove student (`200 OK`)
-![DELETE Student](screenshots/5-delete-student.png)
+### DELETE — Delete student
+![DELETE student](screenshots/5-delete-student.png)
 
 </details>
