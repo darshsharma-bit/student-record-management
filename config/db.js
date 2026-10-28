@@ -2,17 +2,16 @@ const mongoose = require('mongoose');
 
 /**
  * Connect to MongoDB Atlas database
- * Reads MONGO_URI from the .env file.
+ * Reads MONGO_URI from the environment variables.
+ * Throws an error if connection fails so the server does not accept requests in an unready state.
  */
 const connectDB = async () => {
   const rawUri = process.env.MONGO_URI || process.env.MONGODB_URI;
 
   if (!rawUri) {
-    console.error('----------------------------------------------------');
-    console.error('ERROR: MONGO_URI is not defined in your .env file!');
-    console.error('Please create a .env file and add your MongoDB Atlas URI.');
-    console.error('----------------------------------------------------');
-    return;
+    const errorMsg = 'MONGO_URI is not defined in environment variables. Please check your .env file.';
+    console.error(`\n[Database Configuration Error] ${errorMsg}\n`);
+    throw new Error(errorMsg);
   }
 
   // Ensure the database name (studentDB) is included in the URI
@@ -23,16 +22,18 @@ const connectDB = async () => {
 
   try {
     const conn = await mongoose.connect(mongoUri);
-    console.log(` MongoDB Connected Successfully: ${conn.connection.host}`);
-    console.log(` Database Name: ${conn.connection.name}`);
+    console.log(` Connected to MongoDB Atlas host: ${conn.connection.host}`);
+    console.log(` Active Database: ${conn.connection.name}`);
+    return conn;
   } catch (error) {
-    console.error('----------------------------------------------------');
-    console.error(` MongoDB Connection Error: ${error.message}`);
-    console.error('Troubleshooting Tips:');
-    console.error('1. Check if Network Access in MongoDB Atlas allows IP 0.0.0.0/0');
-    console.error('2. Verify your database username and password');
-    console.error('3. Check your internet connection');
-    console.error('----------------------------------------------------');
+    console.error('\n================ MongoDB Connection Failure ================');
+    console.error(`Reason: ${error.message}`);
+    console.error('\nTroubleshooting Checklist:');
+    console.error(' 1. In MongoDB Atlas, verify your current public IP is added to Network Access.');
+    console.error(' 2. Verify database username and password in .env (special chars must be URL-encoded).');
+    console.error(' 3. Check your internet connection or firewall/VPN settings.');
+    console.error('============================================================\n');
+    throw error;
   }
 };
 

@@ -291,6 +291,12 @@ label {
   color: #991b1b;
 }
 
+.alert-success {
+  background-color: #dcfce7;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
 /* -------------------- Table -------------------- */
 .table-responsive {
   overflow-x: auto;

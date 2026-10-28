@@ -2,19 +2,20 @@ const mongoose = require('mongoose');
 
 /**
  * Student Schema
- * A Mongoose schema defines the structure of documents within a MongoDB collection.
- * It enforces data types, requirements, and validation rules.
+ * Defines the structure and validation rules for student documents in MongoDB.
  */
 const studentSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: [true, 'Student name is required'],
-      trim: true
+      trim: true,
+      minlength: [2, 'Name must be at least 2 characters long']
     },
     email: {
       type: String,
       required: [true, 'Student email is required'],
+      unique: true,
       trim: true,
       lowercase: true,
       match: [
@@ -29,14 +30,12 @@ const studentSchema = new mongoose.Schema(
     }
   },
   {
-    // Automatically creates `createdAt` and `updatedAt` timestamps for each record
+    // Automatically creates `createdAt` and `updatedAt` timestamps
     timestamps: true
   }
 );
 
-// Compile the schema into a Mongoose Model
-// MongoDB will automatically create a collection named 'students' (lowercase plural)
+// Compile into a Mongoose Model (creates the 'students' collection in MongoDB)
 const Student = mongoose.model('Student', studentSchema);
 
 module.exports = Student;
-

@@ -14,6 +14,14 @@
       <p class="card-subtitle" id="formSubtitle">Enter student details to save them in MongoDB.</p>
     </div>
 
+    <!-- Server-Side Feedback Alerts -->
+    {{#if errorMessage}}
+      <div class="alert alert-danger">{{errorMessage}}</div>
+    {{/if}}
+    {{#if successMessage}}
+      <div class="alert alert-success">{{successMessage}}</div>
+    {{/if}}
+
     <!-- Dynamic Client-Side Validation Alert -->
     <div id="validationAlert" class="alert alert-danger" style="display: none;"></div>
 

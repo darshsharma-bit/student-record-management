@@ -3,18 +3,23 @@ const Student = require('../models/Student');
 
 // =============================================================================
 // WEB PAGE (HANDLEBARS) CONTROLLERS
-// These functions handle requests from the browser and render HTML views.
+// Handlers for browser requests that render HTML views.
 // =============================================================================
 
 /**
- * @desc    Render the main page displaying all students and the entry form
+ * @desc    Render main page displaying all students and the entry form
  * @route   GET /
  */
 const renderStudentList = async (req, res) => {
   try {
-    // .lean() converts Mongoose documents to plain JavaScript objects for Handlebars
+    // .lean() converts Mongoose documents into plain JavaScript objects for Handlebars
     const students = await Student.find().sort({ createdAt: -1 }).lean();
-    res.render('students/index', { students });
+
+    res.render('students/index', {
+      students,
+      errorMessage: req.query.error,
+      successMessage: req.query.success
+    });
   } catch (error) {
     console.error('Error fetching students for page:', error.message);
     res.render('students/index', {
@@ -30,18 +35,32 @@ const renderStudentList = async (req, res) => {
  */
 const addStudentFromForm = async (req, res) => {
   try {
-    const { name, email, course } = req.body;
+    const name = req.body.name?.trim();
+    const email = req.body.email?.trim();
+    const course = req.body.course?.trim();
 
-    // Simple validation
+    // Required fields validation
     if (!name || !email || !course) {
       return res.redirect('/?error=All+fields+are+required');
     }
 
     await Student.create({ name, email, course });
-    res.redirect('/');
+    res.redirect('/?success=Student+added+successfully');
   } catch (error) {
     console.error('Error adding student from form:', error.message);
-    res.redirect(`/?error=${encodeURIComponent(error.message)}`);
+
+    // Handle duplicate email error (MongoDB error code 11000)
+    if (error.code === 11000) {
+      return res.redirect('/?error=A+student+with+this+email+address+already+exists');
+    }
+
+    // Handle Mongoose validation errors
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      return res.redirect(`/?error=${encodeURIComponent(messages.join(', '))}`);
+    }
+
+    res.redirect('/?error=Failed+to+add+student+record');
   }
 };
 
@@ -52,22 +71,43 @@ const addStudentFromForm = async (req, res) => {
 const updateStudentFromForm = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, course } = req.body;
+    const name = req.body.name?.trim();
+    const email = req.body.email?.trim();
+    const course = req.body.course?.trim();
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.redirect('/?error=Invalid+student+ID');
     }
 
+    if (!name || !email || !course) {
+      return res.redirect('/?error=All+fields+are+required');
+    }
+
+    const student = await Student.findById(id);
+    if (!student) {
+      return res.redirect('/?error=Student+not+found');
+    }
+
     await Student.findByIdAndUpdate(
       id,
       { name, email, course },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
-    res.redirect('/');
+    res.redirect('/?success=Student+updated+successfully');
   } catch (error) {
     console.error('Error updating student from form:', error.message);
-    res.redirect(`/?error=${encodeURIComponent(error.message)}`);
+
+    if (error.code === 11000) {
+      return res.redirect('/?error=A+student+with+this+email+address+already+exists');
+    }
+
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      return res.redirect(`/?error=${encodeURIComponent(messages.join(', '))}`);
+    }
+
+    res.redirect('/?error=Failed+to+update+student+record');
   }
 };
 
@@ -83,17 +123,22 @@ const deleteStudentFromForm = async (req, res) => {
       return res.redirect('/?error=Invalid+student+ID');
     }
 
+    const student = await Student.findById(id);
+    if (!student) {
+      return res.redirect('/?error=Student+not+found');
+    }
+
     await Student.findByIdAndDelete(id);
-    res.redirect('/');
+    res.redirect('/?success=Student+deleted+successfully');
   } catch (error) {
     console.error('Error deleting student from form:', error.message);
-    res.redirect(`/?error=${encodeURIComponent(error.message)}`);
+    res.redirect('/?error=Failed+to+delete+student+record');
   }
 };
 
 // =============================================================================
 // REST API (POSTMAN / JSON) CONTROLLERS
-// These functions return JSON responses with standard HTTP status codes.
+// Return JSON responses with standard HTTP status codes.
 // =============================================================================
 
 /**
@@ -110,10 +155,10 @@ const getAllStudents = async (req, res) => {
       data: students
     });
   } catch (error) {
+    console.error('API Error (getAllStudents):', error.message);
     res.status(500).json({
       success: false,
-      message: 'Server error while fetching students',
-      error: error.message
+      message: 'Server error while fetching student records'
     });
   }
 };
@@ -126,7 +171,7 @@ const getStudentById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Check if ID is a valid MongoDB ObjectId
+    // Validate MongoDB ObjectId format
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         success: false,
@@ -148,10 +193,10 @@ const getStudentById = async (req, res) => {
       data: student
     });
   } catch (error) {
+    console.error(`API Error (getStudentById ${req.params.id}):`, error.message);
     res.status(500).json({
       success: false,
-      message: 'Server error while retrieving student',
-      error: error.message
+      message: 'Server error while retrieving student record'
     });
   }
 };
@@ -162,9 +207,11 @@ const getStudentById = async (req, res) => {
  */
 const createStudent = async (req, res) => {
   try {
-    const { name, email, course } = req.body;
+    const name = req.body.name?.trim();
+    const email = req.body.email?.trim();
+    const course = req.body.course?.trim();
 
-    // Basic input validation
+    // Required fields validation
     if (!name || !email || !course) {
       return res.status(400).json({
         success: false,
@@ -180,7 +227,17 @@ const createStudent = async (req, res) => {
       data: student
     });
   } catch (error) {
-    // Handle Mongoose validation errors
+    console.error('API Error (createStudent):', error.message);
+
+    // Handle duplicate email (E11000)
+    if (error.code === 11000) {
+      return res.status(400).json({
+        success: false,
+        message: 'A student with this email address already exists'
+      });
+    }
+
+    // Handle Mongoose schema validation errors
     if (error.name === 'ValidationError') {
       const messages = Object.values(error.errors).map(err => err.message);
       return res.status(400).json({
@@ -191,25 +248,33 @@ const createStudent = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: 'Server error while creating student',
-      error: error.message
+      message: 'Server error while creating student record'
     });
   }
 };
 
 /**
- * @desc    Update a student's details
+ * @desc    Update an existing student's details
  * @route   PUT /api/students/:id
  */
 const updateStudent = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, course } = req.body;
+    const name = req.body.name?.trim();
+    const email = req.body.email?.trim();
+    const course = req.body.course?.trim();
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         success: false,
         message: 'Invalid student ID format'
+      });
+    }
+
+    if (!name || !email || !course) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide name, email, and course'
       });
     }
 
@@ -222,11 +287,10 @@ const updateStudent = async (req, res) => {
       });
     }
 
-    // Update with new data and run schema validators
     const updatedStudent = await Student.findByIdAndUpdate(
       id,
       { name, email, course },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     res.status(200).json({
@@ -235,6 +299,15 @@ const updateStudent = async (req, res) => {
       data: updatedStudent
     });
   } catch (error) {
+    console.error(`API Error (updateStudent ${req.params.id}):`, error.message);
+
+    if (error.code === 11000) {
+      return res.status(400).json({
+        success: false,
+        message: 'A student with this email address already exists'
+      });
+    }
+
     if (error.name === 'ValidationError') {
       const messages = Object.values(error.errors).map(err => err.message);
       return res.status(400).json({
@@ -245,14 +318,13 @@ const updateStudent = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: 'Server error while updating student',
-      error: error.message
+      message: 'Server error while updating student record'
     });
   }
 };
 
 /**
- * @desc    Delete a student
+ * @desc    Delete a student by ID
  * @route   DELETE /api/students/:id
  */
 const deleteStudent = async (req, res) => {
@@ -282,10 +354,10 @@ const deleteStudent = async (req, res) => {
       message: 'Student record deleted successfully'
     });
   } catch (error) {
+    console.error(`API Error (deleteStudent ${req.params.id}):`, error.message);
     res.status(500).json({
       success: false,
-      message: 'Server error while deleting student',
-      error: error.message
+      message: 'Server error while deleting student record'
     });
   }
 };
@@ -304,4 +376,3 @@ module.exports = {
   updateStudent,
   deleteStudent
 };
-

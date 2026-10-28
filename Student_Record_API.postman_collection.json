@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
     "name": "Student Record Management API",
-    "description": "Postman Collection for University Web Programming CRUD Assignment testing 5 REST API endpoints.",
+    "description": "Comprehensive Postman Collection for University Web Programming Student Record Management System testing all 5 CRUD operations plus validation & error cases.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -23,7 +23,7 @@
             "students"
           ]
         },
-        "description": "Retrieves all student records saved in MongoDB."
+        "description": "Retrieves all student records saved in MongoDB. Expects 200 OK."
       },
       "response": []
     },
@@ -53,7 +53,7 @@
             "students"
           ]
         },
-        "description": "Creates a new student record in MongoDB."
+        "description": "Creates a new student record in MongoDB. Expects 201 Created."
       },
       "response": []
     },
@@ -75,7 +75,7 @@
             "PASTE_STUDENT_ID_HERE"
           ]
         },
-        "description": "Retrieves a single student by replacing PASTE_STUDENT_ID_HERE with the MongoDB _id returned from the POST or GET request."
+        "description": "Retrieves a single student by replacing PASTE_STUDENT_ID_HERE with a valid MongoDB _id. Expects 200 OK."
       },
       "response": []
     },
@@ -106,7 +106,7 @@
             "PASTE_STUDENT_ID_HERE"
           ]
         },
-        "description": "Updates an existing student by ID."
+        "description": "Updates an existing student by ID. Expects 200 OK."
       },
       "response": []
     },
@@ -128,10 +128,83 @@
             "PASTE_STUDENT_ID_HERE"
           ]
         },
-        "description": "Deletes a student by ID from MongoDB."
+        "description": "Deletes a student by ID from MongoDB. Expects 200 OK."
+      },
+      "response": []
+    },
+    {
+      "name": "6. Error Case - Invalid Student ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/students/invalid-student-id-123",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "students",
+            "invalid-student-id-123"
+          ]
+        },
+        "description": "Tests malformed ObjectId validation. Expects 400 Bad Request with 'Invalid student ID format'."
+      },
+      "response": []
+    },
+    {
+      "name": "7. Error Case - Student Not Found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/students/507f1f77bcf86cd799439011",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "students",
+            "507f1f77bcf86cd799439011"
+          ]
+        },
+        "description": "Tests valid ObjectId that does not exist in database. Expects 404 Not Found."
+      },
+      "response": []
+    },
+    {
+      "name": "8. Error Case - Invalid or Missing Input",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"\",\n  \"email\": \"not-a-valid-email\",\n  \"course\": \"\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/students",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "students"
+          ]
+        },
+        "description": "Tests required fields and email validation. Expects 400 Bad Request."
       },
       "response": []
     }
   ]
 }
-

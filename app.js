@@ -60,5 +60,21 @@ app.use((req, res) => {
   res.status(404).send('<h1>404 - Page Not Found</h1><p><a href="/">Return to Home</a></p>');
 });
 
-module.exports = app;
+// =============================================================================
+// CENTRALIZED ERROR HANDLING MIDDLEWARE
+// Prevents sensitive stack traces and driver details from leaking to clients
+// =============================================================================
+app.use((err, req, res, next) => {
+  console.error(`[Unhandled Server Error] ${err.message}`);
+  
+  if (req.originalUrl.startsWith('/api/')) {
+    return res.status(err.status || 500).json({
+      success: false,
+      message: 'Internal Server Error'
+    });
+  }
 
+  res.status(500).send('<h1>500 - Internal Server Error</h1><p><a href="/">Return to Home</a></p>');
+});
+
+module.exports = app;
