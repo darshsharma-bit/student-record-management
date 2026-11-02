@@ -34,7 +34,6 @@ A lightweight, robust, and beginner-friendly **Backend RESTful API** for managin
 | **MongoDB Atlas** | Cloud NoSQL document database | ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white) |
 | **Mongoose** | Object Data Modeling (ODM) library and schema validator | ![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=flat-square&logo=mongoose&logoColor=white) |
 | **Postman** | REST API testing, collection runner, and verification | ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=postman&logoColor=white) |
-| **Font Awesome** | Project iconography and badges | ![Font Awesome](https://img.shields.io/badge/Font_Awesome-538DD7?style=flat-square&logo=fontawesome&logoColor=white) |
 
 ---
 
