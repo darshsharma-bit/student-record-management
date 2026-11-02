@@ -1,20 +1,21 @@
 const express = require('express');
 const studentRoutes = require('./routes/studentRoutes');
+const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
-// Initialize Express app
+// Initialize Express application
 const app = express();
 
 // =============================================================================
-// MIDDLEWARE CONFIGURATION
+// GLOBAL MIDDLEWARE
 // =============================================================================
-// Parse incoming JSON payloads (application/json)
+// Parse incoming JSON request bodies (application/json)
 app.use(express.json());
 
-// Parse incoming urlencoded payloads (application/x-www-form-urlencoded)
+// Parse incoming URL-encoded request bodies (application/x-www-form-urlencoded)
 app.use(express.urlencoded({ extended: true }));
 
 // =============================================================================
-// ROOT & HEALTH CHECK ROUTE
+// ROOT HEALTH CHECK ROUTE
 // =============================================================================
 app.get('/', (req, res) => {
   res.status(200).json({
@@ -32,29 +33,14 @@ app.get('/', (req, res) => {
 });
 
 // =============================================================================
-// REST API ROUTES
+// API RESOURCE ROUTES
 // =============================================================================
 app.use('/api/students', studentRoutes);
 
 // =============================================================================
-// 404 HANDLER FOR UNDEFINED ROUTES
+// ERROR HANDLING MIDDLEWARE
 // =============================================================================
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: `API route not found: ${req.method} ${req.originalUrl}`
-  });
-});
-
-// =============================================================================
-// CENTRALIZED ERROR HANDLING MIDDLEWARE
-// =============================================================================
-app.use((err, req, res, next) => {
-  console.error(`[Unhandled Server Error] ${err.message}`);
-  res.status(err.status || 500).json({
-    success: false,
-    message: 'Internal Server Error'
-  });
-});
+app.use(notFound);
+app.use(errorHandler);
 
 module.exports = app;

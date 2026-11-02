@@ -37,6 +37,8 @@ student-record-management/
 │   └── db.js                              # MongoDB connection lifecycle & error handling
 ├── 📁 controllers/
 │   └── studentController.js               # Clean REST API CRUD controller logic
+├── 📁 middleware/
+│   └── errorMiddleware.js                 # Centralized 404 & global error handling
 ├── 📁 models/
 │   └── Student.js                         # Mongoose schema and model definition
 ├── 📁 routes/
