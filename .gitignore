@@ -3,6 +3,8 @@ node_modules/
 
 # Environment variables (NEVER commit secrets to Git!)
 .env
+.env.*
+!.env.example
 
 # Operating system files
 .DS_Store
