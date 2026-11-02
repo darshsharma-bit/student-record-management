@@ -1,35 +1,45 @@
-# 🎓 Student Record Management System — REST API
+# <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/graduation-cap.svg" width="32" height="32" valign="middle" /> Student Record Management System — REST API
 
-A lightweight, robust, and beginner-friendly **Backend RESTful API** for managing student records, built for a university Web Programming course. This project focuses exclusively on backend architecture, database modeling, CRUD API design, error handling, and automated API testing.
-
-**Tech Stack:** `Node.js` · `Express.js` · `MongoDB Atlas` · `Mongoose` · `Postman`
+A lightweight, robust, and beginner-friendly **Backend RESTful API** for managing student records, built for a university Web Programming course. This project focuses on backend architecture, database modeling, CRUD API design, error handling, and automated API testing.
 
 ---
 
-## 📌 Features
+### <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/layer-group.svg" width="18" height="18" valign="middle" /> Built With & Powered By
 
-- ⚡ **Full CRUD Operations:** Comprehensive endpoints to create, retrieve, update, and delete student documents.
-- 🍃 **Cloud Persistence:** Seamless connection to MongoDB Atlas with Mongoose ODM schemas and models.
-- 🛡️ **Data Validation:** Enforces required fields, minimum character lengths, valid email regex patterns, and unique email constraints.
-- 🔒 **Secure Architecture:** Centralized error-handling middleware preventing internal stack trace leaks; environment variables kept strictly private.
-- 🚦 **Standard HTTP Status Codes:** Returns appropriate semantic status codes (`200 OK`, `201 Created`, `400 Bad Request`, `404 Not Found`, `500 Server Error`).
-- 📮 **Automated API Testing:** Verified with Postman covering both happy paths and negative validation test cases.
-
----
-
-## 🛠️ Tech Stack
-
-| Technology | Role & Purpose |
-| :--- | :--- |
-| **🟢 Node.js** | Server-side JavaScript runtime environment |
-| **⚡ Express.js** | Backend web framework and API route handler |
-| **🍃 MongoDB Atlas** | Cloud NoSQL document database |
-| **📦 Mongoose** | Object Data Modeling (ODM) library and schema validator |
-| **📮 Postman** | REST API testing, collection runner, and verification |
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![MongoDB Atlas](https://img.shields.io/badge/MongoDB_Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white)](https://mongoosejs.com/)
+[![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)](https://www.postman.com/)
+[![Font Awesome](https://img.shields.io/badge/Font_Awesome-538DD7?style=for-the-badge&logo=fontawesome&logoColor=white)](https://github.com/FortAwesome/Font-Awesome)
 
 ---
 
-## 📁 Project Structure
+## <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/list-check.svg" width="20" height="20" valign="middle" /> Features
+
+- <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/bolt.svg" width="14" height="14" valign="middle" /> **Full CRUD Operations:** Comprehensive endpoints to create, retrieve, update, and delete student documents.
+- <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/database.svg" width="14" height="14" valign="middle" /> **Cloud Persistence:** Seamless connection to MongoDB Atlas with Mongoose ODM schemas and models.
+- <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/shield-halved.svg" width="14" height="14" valign="middle" /> **Data Validation:** Enforces required fields, minimum character lengths, valid email regex patterns, and unique email constraints.
+- <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/lock.svg" width="14" height="14" valign="middle" /> **Secure Architecture:** Centralized error-handling middleware preventing internal stack trace leaks; environment variables kept strictly private.
+- <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/traffic-light.svg" width="14" height="14" valign="middle" /> **Standard HTTP Status Codes:** Returns semantic status codes (`200 OK`, `201 Created`, `400 Bad Request`, `404 Not Found`, `500 Server Error`).
+- <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/vial-circle-check.svg" width="14" height="14" valign="middle" /> **Automated API Testing:** Verified with Postman covering both happy paths and negative validation test cases.
+
+---
+
+## <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/gears.svg" width="20" height="20" valign="middle" /> Tech Stack
+
+| Technology | Role & Purpose | Badge / Icon |
+| :--- | :--- | :---: |
+| **Node.js** | Server-side JavaScript runtime environment | ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white) |
+| **Express.js** | Backend web framework and API route handler | ![Express.js](https://img.shields.io/badge/Express.js-000000?style=flat-square&logo=express&logoColor=white) |
+| **MongoDB Atlas** | Cloud NoSQL document database | ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white) |
+| **Mongoose** | Object Data Modeling (ODM) library and schema validator | ![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=flat-square&logo=mongoose&logoColor=white) |
+| **Postman** | REST API testing, collection runner, and verification | ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=postman&logoColor=white) |
+| **Font Awesome** | Project iconography and badges | ![Font Awesome](https://img.shields.io/badge/Font_Awesome-538DD7?style=flat-square&logo=fontawesome&logoColor=white) |
+
+---
+
+## <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/folder-tree.svg" width="20" height="20" valign="middle" /> Project Structure
 
 ```text
 student-record-management/
@@ -50,17 +60,17 @@ student-record-management/
 │   ├── 4-put-update-student.png
 │   └── 5-delete-student.png
 ├── 📄 .env.example                        # Safe environment variables template
-├── 📄 .gitignore                          # Excludes .env, node_modules, and cache
+├── 📄 .gitignore                          # Excludes .env, .env.*, and node_modules
 ├── 📄 app.js                              # Express app configuration & middleware
 ├── 📄 package.json                        # Dependencies and npm scripts
-├── 📄 README.md                           # Documentation with static screenshots
+├── 📄 README.md                           # Documentation with Font Awesome icons
 ├── 📄 server.js                           # Server entry point & DB connection guard
 └── 📄 Student_Record_API.postman_collection.json # 8-request Postman test collection
 ```
 
 ---
 
-## ⚙️ Prerequisites & Setup
+## <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/terminal.svg" width="20" height="20" valign="middle" /> Prerequisites & Setup
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (v18.x or newer) and npm
@@ -97,7 +107,7 @@ PORT=5000
 MONGO_URI=mongodb+srv://<username>:<password>@<cluster-host>/studentDB?retryWrites=true&w=majority
 ```
 
-> 🔒 **Security Notice:** Never commit `.env` to Git. Your database password and cluster URL must remain private. Ensure your current public IP is added under **Security > Network Access** in MongoDB Atlas.
+> <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/lock.svg" width="14" height="14" valign="middle" /> **Security Notice:** Never commit `.env` to Git. Your database password and cluster URL must remain private. Ensure your current public IP is added under **Security > Network Access** in MongoDB Atlas.
 
 ### 3. Start the Server
 
@@ -113,7 +123,7 @@ Base URL: `http://localhost:5000`
 
 ---
 
-## 🚀 REST API Reference
+## <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/network-wired.svg" width="20" height="20" valign="middle" /> REST API Reference
 
 Base URL: `http://localhost:5000`
 
@@ -126,7 +136,7 @@ Base URL: `http://localhost:5000`
 | `PUT` | `/api/students/:id` | Update an existing student's details | `200 OK` |
 | `DELETE` | `/api/students/:id` | Delete a student record from the database | `200 OK` |
 
-### 📝 Sample Request Body (`POST` / `PUT`)
+### <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/file-code.svg" width="16" height="16" valign="middle" /> Sample Request Body (`POST` / `PUT`)
 
 ```json
 {
@@ -136,7 +146,7 @@ Base URL: `http://localhost:5000`
 }
 ```
 
-### 📤 Sample Response (`201 Created`)
+### <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/file-lines.svg" width="16" height="16" valign="middle" /> Sample Response (`201 Created`)
 
 ```json
 {
@@ -155,7 +165,7 @@ Base URL: `http://localhost:5000`
 
 ---
 
-## 📮 Postman API Testing & Verification
+## <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/flask.svg" width="20" height="20" valign="middle" /> Postman API Testing & Verification
 
 The project includes `Student_Record_API.postman_collection.json` in the root folder, covering 8 test cases:
 
@@ -176,7 +186,7 @@ The project includes `Student_Record_API.postman_collection.json` in the root fo
 
 ---
 
-## 📸 Test Execution Evidence
+## <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/camera.svg" width="20" height="20" valign="middle" /> Test Execution Evidence
 
 All test results below are statically displayed and verified directly against the running API:
 
@@ -205,7 +215,7 @@ All test results below are statically displayed and verified directly against th
 
 ---
 
-## 🔍 Troubleshooting
+## <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/triangle-exclamation.svg" width="20" height="20" valign="middle" /> Troubleshooting
 
 - **MongoDB Connection Error (`SSL alert number 80` / `ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR`):**  
   MongoDB Atlas drops connections from unwhitelisted IP addresses. In the Atlas dashboard, go to **Security > Network Access** and click **Add Current IP Address**.
