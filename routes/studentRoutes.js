@@ -1,23 +1,27 @@
 const express = require('express');
 const router = express.Router();
 const {
-  renderStudentList,
-  addStudentFromForm,
-  updateStudentFromForm,
-  deleteStudentFromForm
+  getAllStudents,
+  getStudentById,
+  createStudent,
+  updateStudent,
+  deleteStudent
 } = require('../controllers/studentController');
 
 /**
- * Web Page Routes (serves Handlebars templates and HTML forms)
+ * Student REST API Routes
+ * Base URL mounted at: /api/students
  */
 
-// Home page: lists all students and shows the student form
-router.get('/', renderStudentList);
+// Route: /api/students (GET all students, POST create student)
+router.route('/')
+  .get(getAllStudents)
+  .post(createStudent);
 
-// Form actions
-router.post('/students/add', addStudentFromForm);
-router.post('/students/edit/:id', updateStudentFromForm);
-router.post('/students/delete/:id', deleteStudentFromForm);
+// Route: /api/students/:id (GET single student, PUT update, DELETE remove)
+router.route('/:id')
+  .get(getStudentById)
+  .put(updateStudent)
+  .delete(deleteStudent);
 
 module.exports = router;
-

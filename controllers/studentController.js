@@ -2,148 +2,14 @@ const mongoose = require('mongoose');
 const Student = require('../models/Student');
 
 // =============================================================================
-// WEB PAGE (HANDLEBARS) CONTROLLERS
-// Handlers for browser requests that render HTML views.
+// STUDENT REST API CONTROLLERS
+// Handles CRUD operations and returns standard JSON responses with HTTP status codes
 // =============================================================================
 
 /**
- * @desc    Render main page displaying all students and the entry form
- * @route   GET /
- */
-const renderStudentList = async (req, res) => {
-  try {
-    // .lean() converts Mongoose documents into plain JavaScript objects for Handlebars
-    const students = await Student.find().sort({ createdAt: -1 }).lean();
-
-    res.render('students/index', {
-      students,
-      errorMessage: req.query.error,
-      successMessage: req.query.success
-    });
-  } catch (error) {
-    console.error('Error fetching students for page:', error.message);
-    res.render('students/index', {
-      students: [],
-      errorMessage: 'Could not load student records. Please ensure MongoDB is connected.'
-    });
-  }
-};
-
-/**
- * @desc    Add a new student submitted via the web form
- * @route   POST /students/add
- */
-const addStudentFromForm = async (req, res) => {
-  try {
-    const name = req.body.name?.trim();
-    const email = req.body.email?.trim();
-    const course = req.body.course?.trim();
-
-    // Required fields validation
-    if (!name || !email || !course) {
-      return res.redirect('/?error=All+fields+are+required');
-    }
-
-    await Student.create({ name, email, course });
-    res.redirect('/?success=Student+added+successfully');
-  } catch (error) {
-    console.error('Error adding student from form:', error.message);
-
-    // Handle duplicate email error (MongoDB error code 11000)
-    if (error.code === 11000) {
-      return res.redirect('/?error=A+student+with+this+email+address+already+exists');
-    }
-
-    // Handle Mongoose validation errors
-    if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map(err => err.message);
-      return res.redirect(`/?error=${encodeURIComponent(messages.join(', '))}`);
-    }
-
-    res.redirect('/?error=Failed+to+add+student+record');
-  }
-};
-
-/**
- * @desc    Update an existing student submitted via the web form
- * @route   POST /students/edit/:id
- */
-const updateStudentFromForm = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const name = req.body.name?.trim();
-    const email = req.body.email?.trim();
-    const course = req.body.course?.trim();
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.redirect('/?error=Invalid+student+ID');
-    }
-
-    if (!name || !email || !course) {
-      return res.redirect('/?error=All+fields+are+required');
-    }
-
-    const student = await Student.findById(id);
-    if (!student) {
-      return res.redirect('/?error=Student+not+found');
-    }
-
-    await Student.findByIdAndUpdate(
-      id,
-      { name, email, course },
-      { returnDocument: 'after', runValidators: true }
-    );
-
-    res.redirect('/?success=Student+updated+successfully');
-  } catch (error) {
-    console.error('Error updating student from form:', error.message);
-
-    if (error.code === 11000) {
-      return res.redirect('/?error=A+student+with+this+email+address+already+exists');
-    }
-
-    if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map(err => err.message);
-      return res.redirect(`/?error=${encodeURIComponent(messages.join(', '))}`);
-    }
-
-    res.redirect('/?error=Failed+to+update+student+record');
-  }
-};
-
-/**
- * @desc    Delete a student initiated from the web interface
- * @route   POST /students/delete/:id
- */
-const deleteStudentFromForm = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.redirect('/?error=Invalid+student+ID');
-    }
-
-    const student = await Student.findById(id);
-    if (!student) {
-      return res.redirect('/?error=Student+not+found');
-    }
-
-    await Student.findByIdAndDelete(id);
-    res.redirect('/?success=Student+deleted+successfully');
-  } catch (error) {
-    console.error('Error deleting student from form:', error.message);
-    res.redirect('/?error=Failed+to+delete+student+record');
-  }
-};
-
-// =============================================================================
-// REST API (POSTMAN / JSON) CONTROLLERS
-// Return JSON responses with standard HTTP status codes.
-// =============================================================================
-
-/**
- * @desc    Retrieve all students
+ * @desc    Retrieve all students from MongoDB
  * @route   GET /api/students
+ * @access  Public
  */
 const getAllStudents = async (req, res) => {
   try {
@@ -164,8 +30,9 @@ const getAllStudents = async (req, res) => {
 };
 
 /**
- * @desc    Retrieve a single student by ID
+ * @desc    Retrieve a single student by MongoDB ObjectId
  * @route   GET /api/students/:id
+ * @access  Public
  */
 const getStudentById = async (req, res) => {
   try {
@@ -202,8 +69,9 @@ const getStudentById = async (req, res) => {
 };
 
 /**
- * @desc    Create a new student
+ * @desc    Create a new student record
  * @route   POST /api/students
+ * @access  Public
  */
 const createStudent = async (req, res) => {
   try {
@@ -254,8 +122,9 @@ const createStudent = async (req, res) => {
 };
 
 /**
- * @desc    Update an existing student's details
+ * @desc    Update an existing student record by ID
  * @route   PUT /api/students/:id
+ * @access  Public
  */
 const updateStudent = async (req, res) => {
   try {
@@ -324,8 +193,9 @@ const updateStudent = async (req, res) => {
 };
 
 /**
- * @desc    Delete a student by ID
+ * @desc    Delete a student record by ID
  * @route   DELETE /api/students/:id
+ * @access  Public
  */
 const deleteStudent = async (req, res) => {
   try {
@@ -363,13 +233,6 @@ const deleteStudent = async (req, res) => {
 };
 
 module.exports = {
-  // Web Page Controllers
-  renderStudentList,
-  addStudentFromForm,
-  updateStudentFromForm,
-  deleteStudentFromForm,
-
-  // REST API Controllers
   getAllStudents,
   getStudentById,
   createStudent,

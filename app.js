@@ -1,80 +1,60 @@
 const express = require('express');
-const { engine } = require('express-handlebars');
-const path = require('path');
-
-// Import route modules
 const studentRoutes = require('./routes/studentRoutes');
-const studentApiRoutes = require('./routes/studentApiRoutes');
 
 // Initialize Express app
 const app = express();
 
 // =============================================================================
-// HANDLEBARS TEMPLATE ENGINE SETUP
-// =============================================================================
-app.engine(
-  'handlebars',
-  engine({
-    defaultLayout: 'main',
-    // Allow prototype properties access for Mongoose documents in templates
-    runtimeOptions: {
-      allowProtoPropertiesByDefault: true,
-      allowProtoMethodsByDefault: true
-    }
-  })
-);
-app.set('view engine', 'handlebars');
-app.set('views', path.join(__dirname, 'views'));
-
-// =============================================================================
 // MIDDLEWARE CONFIGURATION
 // =============================================================================
-// Parse incoming form submissions (application/x-www-form-urlencoded)
-app.use(express.urlencoded({ extended: true }));
-
-// Parse incoming JSON payloads (application/json for Postman and API calls)
+// Parse incoming JSON payloads (application/json)
 app.use(express.json());
 
-// Serve static assets (CSS stylesheets, client-side JavaScript, images)
-app.use(express.static(path.join(__dirname, 'public')));
+// Parse incoming urlencoded payloads (application/x-www-form-urlencoded)
+app.use(express.urlencoded({ extended: true }));
 
 // =============================================================================
-// APPLICATION ROUTES
+// ROOT & HEALTH CHECK ROUTE
 // =============================================================================
-// Web UI routes (serves Handlebars pages)
-app.use('/', studentRoutes);
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Student Record Management REST API is running',
+    version: '1.0.0',
+    endpoints: {
+      getAllStudents: 'GET /api/students',
+      createStudent: 'POST /api/students',
+      getStudentById: 'GET /api/students/:id',
+      updateStudent: 'PUT /api/students/:id',
+      deleteStudent: 'DELETE /api/students/:id'
+    }
+  });
+});
 
-// REST API routes (returns JSON responses for Postman testing)
-app.use('/api/students', studentApiRoutes);
+// =============================================================================
+// REST API ROUTES
+// =============================================================================
+app.use('/api/students', studentRoutes);
 
 // =============================================================================
 // 404 HANDLER FOR UNDEFINED ROUTES
 // =============================================================================
 app.use((req, res) => {
-  if (req.originalUrl.startsWith('/api/')) {
-    return res.status(404).json({
-      success: false,
-      message: `API route not found: ${req.method} ${req.originalUrl}`
-    });
-  }
-  res.status(404).send('<h1>404 - Page Not Found</h1><p><a href="/">Return to Home</a></p>');
+  res.status(404).json({
+    success: false,
+    message: `API route not found: ${req.method} ${req.originalUrl}`
+  });
 });
 
 // =============================================================================
 // CENTRALIZED ERROR HANDLING MIDDLEWARE
-// Prevents sensitive stack traces and driver details from leaking to clients
 // =============================================================================
 app.use((err, req, res, next) => {
   console.error(`[Unhandled Server Error] ${err.message}`);
-  
-  if (req.originalUrl.startsWith('/api/')) {
-    return res.status(err.status || 500).json({
-      success: false,
-      message: 'Internal Server Error'
-    });
-  }
-
-  res.status(500).send('<h1>500 - Internal Server Error</h1><p><a href="/">Return to Home</a></p>');
+  res.status(err.status || 500).json({
+    success: false,
+    message: 'Internal Server Error'
+  });
 });
 
 module.exports = app;

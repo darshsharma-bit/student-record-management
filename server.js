@@ -19,10 +19,10 @@ const startServer = async () => {
 
     const server = app.listen(PORT, () => {
       console.log('====================================================');
-      console.log(` Student Record Management Server is Running!`);
-      console.log(` Web UI:  http://localhost:${PORT}`);
-      console.log(` API URL: http://localhost:${PORT}/api/students`);
-      console.log(` Mode:    ${process.env.NODE_ENV || 'development'}`);
+      console.log(` Student Record Management REST API is Running!`);
+      console.log(` Base URL: http://localhost:${PORT}`);
+      console.log(` API URL:  http://localhost:${PORT}/api/students`);
+      console.log(` Mode:     ${process.env.NODE_ENV || 'development'}`);
       console.log('====================================================');
     });
 

@@ -1,54 +1,72 @@
-# Student Record Management System
+# 🎓 Student Record Management System — REST API
 
-A simple web application for managing student records, built as a Web Programming project. It uses a server-rendered Handlebars interface, an Express REST API, and MongoDB for persistent storage.
+A lightweight, robust, and beginner-friendly **Backend RESTful API** for managing student records, built for a university Web Programming course. This project focuses exclusively on backend architecture, database modeling, CRUD API design, error handling, and automated API testing.
 
-**Stack:** Node.js · Express · Handlebars · MongoDB Atlas · Mongoose · Vanilla JavaScript
+**Tech Stack:** `Node.js` · `Express.js` · `MongoDB Atlas` · `Mongoose` · `Postman`
 
-## Features
+---
 
-- Add, view, edit, and delete student records.
-- Store student name, email, and course in MongoDB.
-- Render the student list using Handlebars.
-- Validate input in the browser and with Mongoose.
-- Test CRUD endpoints with Postman.
+## 📌 Features
 
-## Tech stack
+- ⚡ **Full CRUD Operations:** Comprehensive endpoints to create, retrieve, update, and delete student documents.
+- 🍃 **Cloud Persistence:** Seamless connection to MongoDB Atlas with Mongoose ODM schemas and models.
+- 🛡️ **Data Validation:** Enforces required fields, minimum character lengths, valid email regex patterns, and unique email constraints.
+- 🔒 **Secure Architecture:** Centralized error-handling middleware preventing internal stack trace leaks; environment variables kept strictly private.
+- 🚦 **Standard HTTP Status Codes:** Returns appropriate semantic status codes (`200 OK`, `201 Created`, `400 Bad Request`, `404 Not Found`, `500 Server Error`).
+- 📮 **Automated API Testing:** Verified with Postman covering both happy paths and negative validation test cases.
 
-| Technology | Purpose |
-|---|---|
-| HTML, CSS, JavaScript | Form, table, styling, and browser interactions |
-| Node.js, Express | Server and request routing |
-| Handlebars | Server-rendered HTML |
-| MongoDB Atlas, Mongoose | Persistent data storage and schema validation |
-| Postman | REST API testing |
+---
 
-## Project structure
+## 🛠️ Tech Stack
+
+| Technology | Role & Purpose |
+| :--- | :--- |
+| **🟢 Node.js** | Server-side JavaScript runtime environment |
+| **⚡ Express.js** | Backend web framework and API route handler |
+| **🍃 MongoDB Atlas** | Cloud NoSQL document database |
+| **📦 Mongoose** | Object Data Modeling (ODM) library and schema validator |
+| **📮 Postman** | REST API testing, collection runner, and verification |
+
+---
+
+## 📁 Project Structure
 
 ```text
-config/db.js                         # MongoDB connection
-models/Student.js                    # Student schema and model
-controllers/studentController.js    # UI and API logic
-routes/studentRoutes.js              # Browser routes
-routes/studentApiRoutes.js           # JSON API routes
-views/                               # Handlebars templates
-public/css/style.css                 # Styles
-public/js/script.js                  # Browser-side JavaScript
-screenshots/                         # Postman test screenshots
-Student_Record_API.postman_collection.json # Postman collection
-app.js                               # Express configuration
-server.js                            # Application entry point
-.env.example                         # Environment template
+student-record-management/
+├── 📁 config/
+│   └── db.js                              # MongoDB connection lifecycle & error handling
+├── 📁 controllers/
+│   └── studentController.js               # Clean REST API CRUD controller logic
+├── 📁 models/
+│   └── Student.js                         # Mongoose schema and model definition
+├── 📁 routes/
+│   └── studentRoutes.js                   # Express REST API routes (/api/students)
+├── 📁 screenshots/                        # Verified Postman test execution screenshots
+│   ├── 1-get-all-students.png
+│   ├── 2-post-create-student.png
+│   ├── 3-get-student-by-id.png
+│   ├── 4-put-update-student.png
+│   └── 5-delete-student.png
+├── 📄 .env.example                        # Safe environment variables template
+├── 📄 .gitignore                          # Excludes .env, node_modules, and cache
+├── 📄 app.js                              # Express app configuration & middleware
+├── 📄 package.json                        # Dependencies and npm scripts
+├── 📄 README.md                           # Documentation with static screenshots
+├── 📄 server.js                           # Server entry point & DB connection guard
+└── 📄 Student_Record_API.postman_collection.json # 8-request Postman test collection
 ```
 
-## Run locally
+---
 
-### Requirements
+## ⚙️ Prerequisites & Setup
 
-- [Node.js](https://nodejs.org/) and npm
-- A [MongoDB Atlas](https://www.mongodb.com/atlas) deployment (or another MongoDB connection)
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18.x or newer) and npm
+- [Git](https://git-scm.com/)
+- A free [MongoDB Atlas](https://www.mongodb.com/atlas) deployment (or local MongoDB)
 - [Postman Desktop](https://www.postman.com/downloads/) for API testing
 
-### 1. Install dependencies
+### 1. Clone & Install Dependencies
 
 ```bash
 git clone https://github.com/darshsharma-bit/student-record-management.git
@@ -56,84 +74,91 @@ cd student-record-management
 npm install
 ```
 
-### 2. Configure environment variables
+### 2. Configure Environment Variables
 
-Copy `.env.example` to `.env`.
+Create your local `.env` file from the provided template:
 
-PowerShell:
-
+**PowerShell (Windows):**
 ```powershell
 Copy-Item .env.example .env
 ```
 
-macOS / Linux:
-
+**Bash (macOS / Linux):**
 ```bash
 cp .env.example .env
 ```
 
-Then set your own MongoDB connection string in `.env`:
+Configure your MongoDB Atlas connection string in `.env`:
 
 ```env
 PORT=5000
 MONGO_URI=mongodb+srv://<username>:<password>@<cluster-host>/studentDB?retryWrites=true&w=majority
 ```
 
-Replace the placeholders with your Atlas details. In Atlas, create a database user and allow access from your current IP address. Keep `.env` private; never commit credentials.
+> 🔒 **Security Notice:** Never commit `.env` to Git. Your database password and cluster URL must remain private. Ensure your current public IP is added under **Security > Network Access** in MongoDB Atlas.
 
-### 3. Start the server
+### 3. Start the Server
 
 ```bash
+# Development mode (auto-reload on code changes)
 npm run dev
+
+# Production mode
+npm start
 ```
-
-Open [http://localhost:5000](http://localhost:5000).
-
-## REST API
 
 Base URL: `http://localhost:5000`
 
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/api/students` | List all students |
-| `POST` | `/api/students` | Create a student |
-| `GET` | `/api/students/:id` | Get a student by MongoDB ID |
-| `PUT` | `/api/students/:id` | Update a student |
-| `DELETE` | `/api/students/:id` | Delete a student |
+---
 
-### Sample Request (`POST` / `PUT`)
+## 🚀 REST API Reference
+
+Base URL: `http://localhost:5000`
+
+| Method | Endpoint | Description | Success Status |
+| :---: | :--- | :--- | :---: |
+| `GET` | `/` | API status and route discovery | `200 OK` |
+| `GET` | `/api/students` | Retrieve all student records | `200 OK` |
+| `POST` | `/api/students` | Create a new student record | `201 Created` |
+| `GET` | `/api/students/:id` | Retrieve a single student by MongoDB ID | `200 OK` |
+| `PUT` | `/api/students/:id` | Update an existing student's details | `200 OK` |
+| `DELETE` | `/api/students/:id` | Delete a student record from the database | `200 OK` |
+
+### 📝 Sample Request Body (`POST` / `PUT`)
 
 ```json
 {
   "name": "Jane Doe",
   "email": "jane.doe@example.com",
-  "course": "Web Programming"
+  "course": "Computer Science"
 }
 ```
 
-### Sample Response (`201 Created`)
+### 📤 Sample Response (`201 Created`)
 
 ```json
 {
   "success": true,
   "message": "Student record created successfully",
   "data": {
-    "_id": "6ae23726109f1750c9ee66ec",
+    "_id": "6ae891a2f35b68e72ec74900",
     "name": "Jane Doe",
     "email": "jane.doe@example.com",
-    "course": "Web Programming",
-    "createdAt": "2026-10-28T17:55:50.238Z",
-    "updatedAt": "2026-10-28T17:55:50.238Z"
+    "course": "Computer Science",
+    "createdAt": "2026-11-02T13:35:28.120Z",
+    "updatedAt": "2026-11-02T13:35:28.120Z"
   }
 }
 ```
 
-## Postman testing
+---
 
-The project includes `Student_Record_API.postman_collection.json` covering 8 test cases:
+## 📮 Postman API Testing & Verification
+
+The project includes `Student_Record_API.postman_collection.json` in the root folder, covering 8 test cases:
 
 1. `GET /api/students` — Retrieve all students (`200 OK`)
-2. `POST /api/students` — Create a new student (`201 Created`)
+2. `POST /api/students` — Create student (`201 Created`)
 3. `GET /api/students/:id` — Retrieve student by ID (`200 OK`)
 4. `PUT /api/students/:id` — Update student (`200 OK`)
 5. `DELETE /api/students/:id` — Delete student (`200 OK`)
@@ -141,33 +166,48 @@ The project includes `Student_Record_API.postman_collection.json` covering 8 tes
 7. `GET /api/students/<nonexistent-id>` — Non-existent student (`404 Not Found`)
 8. `POST /api/students` — Missing required fields validation (`400 Bad Request`)
 
-Import `Student_Record_API.postman_collection.json` into Postman Desktop and run requests against `http://localhost:5000`. For requests using `:id`, substitute a valid MongoDB `_id`.
+### How to Import
+1. Open **Postman Desktop**.
+2. Click **Import** in the top-left navigation bar.
+3. Select `Student_Record_API.postman_collection.json`.
+4. Run requests against `http://localhost:5000`.
 
-<details>
-<summary>View Postman test screenshots</summary>
+---
 
-### GET — List students
-![GET all students](screenshots/1-get-all-students.png)
+## 📸 Test Execution Evidence
 
-### POST — Create student
-![POST create student](screenshots/2-post-create-student.png)
+All test results below are statically displayed and verified directly against the running API:
 
-### GET — Retrieve by ID
-![GET student by ID](screenshots/3-get-student-by-id.png)
+### 1. 🟢 GET — Retrieve All Students (`200 OK`)
+![GET All Students](screenshots/1-get-all-students.png)
 
-### PUT — Update student
-![PUT update student](screenshots/4-put-update-student.png)
+---
 
-### DELETE — Delete student
-![DELETE student](screenshots/5-delete-student.png)
+### 2. 🔵 POST — Create Student (`201 Created`)
+![POST Create Student](screenshots/2-post-create-student.png)
 
-</details>
+---
 
-## Troubleshooting
+### 3. 🟡 GET by ID — Retrieve Student by ID (`200 OK`)
+![GET Student by ID](screenshots/3-get-student-by-id.png)
+
+---
+
+### 4. 🟠 PUT — Update Student (`200 OK`)
+![PUT Update Student](screenshots/4-put-update-student.png)
+
+---
+
+### 5. 🔴 DELETE — Remove Student (`200 OK`)
+![DELETE Student](screenshots/5-delete-student.png)
+
+---
+
+## 🔍 Troubleshooting
 
 - **MongoDB Connection Error (`SSL alert number 80` / `ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR`):**  
-  MongoDB Atlas blocks connection attempts from unauthorized IP addresses. In the Atlas dashboard, navigate to **Security** > **Network Access** and ensure your current public IP address is active in the access list.
-- **Port Conflict (`EADDRINUSE: address already in use :::5000`):**  
-  Another application or background node process is utilizing port 5000. Either terminate the process or change `PORT=5001` in your local `.env` file.
-- **Invalid ID Format (`400 Bad Request` vs `404 Not Found`):**  
-  MongoDB requires a 24-character hexadecimal string for document IDs. Malformed strings return `400 Bad Request` (client input error), whereas properly formatted 24-character IDs that do not exist in the database return `404 Not Found`.
+  MongoDB Atlas drops connections from unwhitelisted IP addresses. In the Atlas dashboard, go to **Security > Network Access** and click **Add Current IP Address**.
+- **Port Conflict (`EADDRINUSE :::5000`):**  
+  Another background process is using port 5000. Stop that process or set `PORT=5001` in your `.env` file.
+- **Malformed ID (`400 Bad Request` vs `404 Not Found`):**  
+  MongoDB requires 24-character hexadecimal IDs. Invalid string formats return `400 Bad Request`. Valid 24-character IDs not present in the database return `404 Not Found`.

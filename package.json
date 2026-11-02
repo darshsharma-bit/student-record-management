@@ -1,7 +1,7 @@
 {
   "name": "student-record-management",
   "version": "1.0.0",
-  "description": "A beginner-friendly Student Record Management System built with Node.js, Express, Handlebars, and MongoDB Atlas.",
+  "description": "A clean and robust Student Record Management REST API built with Node.js, Express, and MongoDB Atlas.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -12,7 +12,7 @@
     "express",
     "mongodb",
     "mongoose",
-    "handlebars",
+    "rest-api",
     "crud",
     "student-management"
   ],
@@ -21,7 +21,6 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "express-handlebars": "^8.0.1",
     "mongoose": "^8.9.5"
   },
   "devDependencies": {
